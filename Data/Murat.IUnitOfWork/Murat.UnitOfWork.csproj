@@ -1,0 +1,14 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
+    <AssemblyName>Murat.UnitOfWork</AssemblyName>
+    <RootNamespace>Murat.UnitOfWork</RootNamespace>
+    <Platforms>AnyCPU;x64</Platforms>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Murat.Repository\Murat.Repository.csproj" />
+  </ItemGroup>
+
+</Project>

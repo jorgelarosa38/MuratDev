@@ -16,8 +16,8 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Data\Murat.BussinessLogic\Murat.BusinessLogic.csproj" />
+    <ProjectReference Include="..\Data\Murat.DataAccess\Murat.DataAccess.csproj" />
     <ProjectReference Include="..\Data\Murat.IUnitOfWork\Murat.UnitOfWork.csproj" />
-    <ProjectReference Include="..\Murat.DataAccess\Murat.DataAccess.csproj" />
   </ItemGroup>
 
 

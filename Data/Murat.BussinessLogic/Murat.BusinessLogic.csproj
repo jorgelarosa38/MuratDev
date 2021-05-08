@@ -1,0 +1,23 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
+    <AssemblyName>Murat.BusinessLogic</AssemblyName>
+    <RootNamespace>Murat.BusinessLogic</RootNamespace>
+    <Platforms>AnyCPU;x64</Platforms>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.Extensions.Configuration" Version="3.1.14" />
+    <PackageReference Include="Microsoft.Extensions.Options" Version="3.1.14" />
+    <PackageReference Include="System.Drawing.Common" Version="5.0.2" />
+    <PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="6.11.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Murat.IUnitOfWork\Murat.UnitOfWork.csproj" />
+    <ProjectReference Include="..\Murat.Models\Murat.Models.csproj" />
+    <ProjectReference Include="..\Murat.Repository\Murat.Repository.csproj" />
+  </ItemGroup>
+
+</Project>
