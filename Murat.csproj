@@ -1,0 +1,24 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
+    <AssemblyName>Murat.WebApi</AssemblyName>
+    <RootNamespace>Murat.WebApi</RootNamespace>
+    <Platforms>AnyCPU;x64</Platforms>
+    <UserSecretsId>30c59447-e9e6-4123-9f9e-0c07e6db0f0d</UserSecretsId>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="3.1.14" />
+    <PackageReference Include="Microsoft.Extensions.Options" Version="3.1.14" />
+    <PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="6.11.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Data\Murat.BussinessLogic\Murat.BusinessLogic.csproj" />
+    <ProjectReference Include="..\Data\Murat.IUnitOfWork\Murat.UnitOfWork.csproj" />
+    <ProjectReference Include="..\Murat.DataAccess\Murat.DataAccess.csproj" />
+  </ItemGroup>
+
+
+</Project>
