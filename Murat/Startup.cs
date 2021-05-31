@@ -13,14 +13,14 @@ using Murat.DataAccess;
 using Murat.BusinessLogic.Interfaces;
 using Murat.BusinessLogic.Implementations;
 using Murat.UnitOfWork;
+using static Murat.WebApi.Utilities.AESstring;
 
 namespace Murat.WebApi
 {
     public class Startup
     {
-        private readonly string MyAllowedOrigin = "_MyOriginPolicy";
-        private readonly string MyAllowedOrigin2 = "_MyOriginPolicy2";
-        private readonly string LocalOrigin = "_LocalOrigin";
+        private readonly string MyAllowedOrigin = "_OriginPolicy";
+        private readonly string MyAllowedOrigin2 = "_OriginPolicy2";
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
@@ -37,8 +37,8 @@ namespace Murat.WebApi
                 options.AddPolicy(MyAllowedOrigin,
                     builder =>
                     {
-                        //builder.WithOrigins(Configuration["AppSettings:AllowedOrigins"].Split(";"))
-                        builder.WithOrigins((Configuration.GetSection("AppSettings").GetSection("Origins").Value).Split(";"))
+                        builder.WithOrigins(Configuration["AppSettings:Origins"].Split(";"))
+                        
                         .AllowCredentials()
                         .AllowAnyMethod()
                         .AllowAnyHeader();
@@ -47,16 +47,7 @@ namespace Murat.WebApi
                 options.AddPolicy(MyAllowedOrigin2,
                     builder =>
                     {
-                        builder.WithOrigins((Configuration.GetSection("AppSettings").GetSection("Origins2").Value).Split(";"))
-                        .AllowCredentials()
-                        .AllowAnyMethod()
-                        .AllowAnyHeader();
-                    });
-
-                options.AddPolicy(LocalOrigin,
-                    builder =>
-                    {
-                        builder.WithOrigins("http://localhost:4200")
+                        builder.WithOrigins(Configuration["AppSettings:Origins2"].Split(";"))
                         .AllowCredentials()
                         .AllowAnyMethod()
                         .AllowAnyHeader();
@@ -86,7 +77,7 @@ namespace Murat.WebApi
 
             #region SQL CONNECTION
             services.AddSingleton<IUnitOfWork>(option => new ProjectUnitOfWork(
-            Configuration.GetConnectionString("Project"), Configuration
+            DecryptAES(Configuration.GetConnectionString("Project")), Configuration
             ));
             #endregion
 
@@ -132,7 +123,7 @@ namespace Murat.WebApi
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
-            app.UseCors();
+            app.UseCors(MyAllowedOrigin).UseCors(MyAllowedOrigin2);
             app.UseHttpsRedirection();
             if (env.IsDevelopment())
             {

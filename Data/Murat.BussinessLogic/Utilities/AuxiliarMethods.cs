@@ -19,7 +19,7 @@ namespace Murat.BusinessLogic.Utilities
         public static void Base64ToImage(string binary, string ImagePath, string Category)
         {
             var img = Image.FromStream(new MemoryStream(Convert.FromBase64String(binary)));
-            var path = String.Concat("D:/WEB/TiendaVirtual/Slider/", Category,"/", ImagePath);
+            var path = String.Concat("D:/WEB/Murat/Slider/", Category,"/", ImagePath);
             if (File.Exists(path))
             {
                 File.Delete(path);

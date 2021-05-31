@@ -29,7 +29,7 @@ namespace Murat.BusinessLogic.Implementations
                     {
                         if (item.SArchivo != "")
                         {
-                            string url_imagen = AuxiliarMethods.GenerarURL("Slider", ""); // item.SArchivo);
+                            string url_imagen = AuxiliarMethods.GenerarURL("Slider", item.SArchivo);
                             item.UrlImagen = url_imagen;
                         }
                     }
