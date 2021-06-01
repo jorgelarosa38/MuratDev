@@ -19,8 +19,12 @@ namespace Murat.WebApi
 {
     public class Startup
     {
-        private readonly string MyAllowedOrigin = "_OriginPolicy";
-        private readonly string MyAllowedOrigin2 = "_OriginPolicy2";
+        private readonly string FordanList = "http://localhost:4200;" +
+            "https://www.murat.peru-tiendas.com;https://murat.peru-tiendas.com;http://www.murat.peru-tiendas.com;http://murat.peru-tiendas.com;" +
+            "https://www.fordanjeans.com;https://fordanjeans.com;http://www.fordanjeans.com;http://fordanjeans.com;" +
+            "https://www.murat.pe;https://murat.pe;http://www.murat.pe;http://murat.pe;" +
+            "https://www.tiendasvirtualesperu.pe;https://tiendasvirtualesperu.pe;http://www.tiendasvirtualesperu.pe;http://tiendasvirtualesperu.pe;";
+        private readonly string FordanOrigin = "_FordanPolicy";
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
@@ -34,20 +38,11 @@ namespace Murat.WebApi
             #region ENABLE CORS
             services.AddCors(options =>
             {
-                options.AddPolicy(MyAllowedOrigin,
+                options.AddPolicy(FordanOrigin,
                     builder =>
                     {
-                        builder.WithOrigins(Configuration["AppSettings:Origins"].Split(";"))
+                        builder.WithOrigins(FordanList.Split(";"))
                         
-                        .AllowCredentials()
-                        .AllowAnyMethod()
-                        .AllowAnyHeader();
-                    });
-
-                options.AddPolicy(MyAllowedOrigin2,
-                    builder =>
-                    {
-                        builder.WithOrigins(Configuration["AppSettings:Origins2"].Split(";"))
                         .AllowCredentials()
                         .AllowAnyMethod()
                         .AllowAnyHeader();
@@ -123,7 +118,7 @@ namespace Murat.WebApi
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
-            app.UseCors(MyAllowedOrigin).UseCors(MyAllowedOrigin2);
+            app.UseCors(FordanOrigin);
             app.UseHttpsRedirection();
             if (env.IsDevelopment())
             {
