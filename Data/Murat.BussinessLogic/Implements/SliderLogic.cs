@@ -5,15 +5,18 @@ using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Murat.UnitOfWork;
+using Microsoft.Extensions.Configuration;
 
 namespace Murat.BusinessLogic.Implementations
 {
     public class SliderLogic : ISliderLogic
     {
+        private readonly IConfiguration _config;
         private readonly IUnitOfWork _unitOfWork;
-        public SliderLogic(IUnitOfWork unitOfWork)
+        public SliderLogic(IUnitOfWork unitOfWork, IConfiguration config)
         {
             _unitOfWork = unitOfWork;
+            _config = config;
         }
 
         public async Task<object> GetSliders(string cod_Tipo)
@@ -25,11 +28,12 @@ namespace Murat.BusinessLogic.Implementations
 
                 if (list.Count > 0)
                 {
+                    string directory = _config.GetSection("AppSettings").GetSection("url_imagenes").Value;
                     foreach (var item in list)
                     {
                         if (item.SArchivo != "")
                         {
-                            string url_imagen = AuxiliarMethods.GenerarURL("Slider", item.SArchivo);
+                            string url_imagen = AuxiliarMethods.GenerarURL(directory, "Slider", item.SArchivo);
                             item.UrlImagen = url_imagen;
                         }
                     }
@@ -60,11 +64,12 @@ namespace Murat.BusinessLogic.Implementations
             {
                 if (slider.ACCION == "A" || slider.ACCION == "M")
                 {
+                    string directory = _config.GetSection("AppSettings").GetSection("directory").Value;
                     slider.SArchivo = slider.SArchivo.ToString().Trim();
                     slider.BImagen = slider.BImagen.ToString().Trim();
                     if (slider.SArchivo != "" && slider.BImagen != "")
                     {
-                        AuxiliarMethods.Base64ToImage(slider.BImagen, slider.SArchivo, "Slider");
+                        AuxiliarMethods.Base64ToImage(directory, slider.BImagen, slider.SArchivo, "Slider");
                     }
                 }
 

@@ -5,15 +5,18 @@ using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Murat.UnitOfWork;
+using Microsoft.Extensions.Configuration;
 
 namespace Murat.BusinessLogic.Implementations
 {
     public class MarcaLogic : IMarcaLogic
     {
+        private readonly IConfiguration _config;
         private readonly IUnitOfWork _unitOfWork;
-        public MarcaLogic(IUnitOfWork unitOfWork)
+        public MarcaLogic(IUnitOfWork unitOfWork, IConfiguration config)
         {
             _unitOfWork = unitOfWork;
+            _config = config;
         }
 
         public async Task<object> GetMarcas(string sMarca)
@@ -25,11 +28,12 @@ namespace Murat.BusinessLogic.Implementations
 
                 if (list.Count > 0)
                 {
+                    string directory = _config.GetSection("AppSettings").GetSection("url_imagenes").Value;
                     foreach (var item in list)
                     {
                         if (item.SArchivo != "")
                         {
-                            string url_imagen = AuxiliarMethods.GenerarURL("Marca", item.SArchivo);
+                            string url_imagen = AuxiliarMethods.GenerarURL(directory,"Marca", item.SArchivo);
                             item.UrlImagen = url_imagen;
                         }
                     }
@@ -60,11 +64,12 @@ namespace Murat.BusinessLogic.Implementations
             {
                 if (marca.ACCION == "A" || marca.ACCION == "M")
                 {
+                    string directory = _config.GetSection("AppSettings").GetSection("directory").Value;
                     marca.SArchivo = marca.SArchivo.ToString().Trim();
                     marca.BImagen = marca.BImagen.ToString().Trim();
                     if (marca.SArchivo != "" && marca.BImagen != "")
                     {
-                        AuxiliarMethods.Base64ToImage(marca.BImagen, marca.SArchivo, "Marca");
+                        AuxiliarMethods.Base64ToImage(directory, marca.BImagen, marca.SArchivo, "Marca");
                     }
                 }
                 responsesql = await _unitOfWork.Marca.UpdMarca(marca);

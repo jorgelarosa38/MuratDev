@@ -6,15 +6,18 @@ using Murat.BusinessLogic.Interfaces;
 using Murat.BusinessLogic.Utilities;
 using Murat.Models;
 using Murat.UnitOfWork;
+using Microsoft.Extensions.Configuration;
 
 namespace Murat.BusinessLogic.Implementations
 {
     public class MuratServicesLogic : IMuratServicesLogic
     {
+        private readonly IConfiguration _config;
         private readonly IUnitOfWork _unitOfWork;
-        public MuratServicesLogic(IUnitOfWork unitOfWork)
+        public MuratServicesLogic(IUnitOfWork unitOfWork, IConfiguration config)
         {
             _unitOfWork = unitOfWork;
+            _config = config;
         }
 
         public async Task<object> GetMenuBar(int Tipo, int Id1, int Id2)
@@ -113,11 +116,12 @@ namespace Murat.BusinessLogic.Implementations
 
                 if (list.Count() > 0)
                 {
+                    string directory = _config.GetSection("AppSettings").GetSection("url_imagenes").Value;
                     foreach (var item in list)
                     {
                         if (item.SArchivo_Producto != "")
                         {
-                            item.Url_Producto = AuxiliarMethods.GenerarURL("Producto", item.SArchivo_Producto);
+                            item.Url_Producto = AuxiliarMethods.GenerarURL(directory, "Producto", item.SArchivo_Producto);
                         }
                     }
                     response.Status = Constant.Status;
@@ -147,32 +151,33 @@ namespace Murat.BusinessLogic.Implementations
 
                 if (list.Count() > 0)
                 {
+                    string directory = _config.GetSection("AppSettings").GetSection("url_imagenes").Value;
                     foreach (var item in list)
                     {
                         if (item.Archivo_Marca != "")
                         {
-                            item.Url_Marca = AuxiliarMethods.GenerarURL("Marca", item.Archivo_Marca);
+                            item.Url_Marca = AuxiliarMethods.GenerarURL(directory, "Marca", item.Archivo_Marca);
                         }
                         if (item.Archivo_Producto != "")
                         {
-                            item.Url_Producto = AuxiliarMethods.GenerarURL("Producto", item.Archivo_Producto);
+                            item.Url_Producto = AuxiliarMethods.GenerarURL(directory, "Producto", item.Archivo_Producto);
                         }
                         if (item.Archivo_Talla != "")
                         {
-                            item.Url_Talla = AuxiliarMethods.GenerarURL("Producto", item.Archivo_Talla);
+                            item.Url_Talla = AuxiliarMethods.GenerarURL(directory, "Producto", item.Archivo_Talla);
                         }
                         foreach (var imagen in item.Imagen)
                         {
                             if (imagen.Archivo_Produccto_Color != "")
                             {
-                                imagen.Url_Color = AuxiliarMethods.GenerarURL("Producto", imagen.Archivo_Produccto_Color);
+                                imagen.Url_Color = AuxiliarMethods.GenerarURL(directory, "Producto", imagen.Archivo_Produccto_Color);
                             }
                         }
                         foreach (var color in item.Color)
                         {
                             if (color.SArchivo_Imagen_0 != "")
                             {
-                                color.Url_Imagen_0 = AuxiliarMethods.GenerarURL("Producto", color.SArchivo_Imagen_0);
+                                color.Url_Imagen_0 = AuxiliarMethods.GenerarURL(directory, "Producto", color.SArchivo_Imagen_0);
                             }
                         }
                     }
@@ -203,13 +208,14 @@ namespace Murat.BusinessLogic.Implementations
 
                 if (list.Count > 0)
                 {
+                    string directory = _config.GetSection("AppSettings").GetSection("url_imagenes").Value;
                     foreach (var main in list)
                     {
                         foreach (var slider in main.Sliders)
                         {
                             if (slider.SArchivo != "")
                             {
-                                slider.UrlImagen = AuxiliarMethods.GenerarURL("Slider", slider.SArchivo);
+                                slider.UrlImagen = AuxiliarMethods.GenerarURL(directory, "Slider", slider.SArchivo);
                             }
                         }
                     }

@@ -5,15 +5,18 @@ using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Murat.UnitOfWork;
+using Microsoft.Extensions.Configuration;
 
 namespace Murat.BusinessLogic.Implementations
 {
     public class CommonLogic : ICommonLogic
     {
+        private readonly IConfiguration _config;
         private readonly IUnitOfWork _unitOfWork;
-        public CommonLogic(IUnitOfWork unitOfWork)
+        public CommonLogic(IUnitOfWork unitOfWork, IConfiguration config)
         {
             _unitOfWork = unitOfWork;
+            _config = config;
         }
 
         public async Task<object> GetNroImagen(int tipo, int id1, int id2, int id3)
@@ -25,6 +28,7 @@ namespace Murat.BusinessLogic.Implementations
 
                 if (list.Count > 0)
                 {
+                    string directory = _config.GetSection("AppSettings").GetSection("url_imagenes").Value;
                     foreach (var imagen in list)
                     {
                         foreach (var item in imagen.Archivo_Imagenes)
@@ -33,7 +37,7 @@ namespace Murat.BusinessLogic.Implementations
                             if (tipo == 2)
                                 categoria = "Slider";
 
-                            item.Url_Imagen = AuxiliarMethods.GenerarURL(categoria, item.SArchivo);
+                            item.Url_Imagen = AuxiliarMethods.GenerarURL(directory, categoria, item.SArchivo);
                         }
                     }
 

@@ -162,7 +162,7 @@ namespace Murat.BusinessLogic.Implementations
                 new MailAddress(email);
                 return true;
             }
-            catch (FormatException ex)
+            catch (FormatException)
             {
                 return false;
             }

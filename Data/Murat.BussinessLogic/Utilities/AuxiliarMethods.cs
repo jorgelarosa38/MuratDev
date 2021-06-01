@@ -3,23 +3,15 @@ using System;
 using System.Drawing;
 using System.IO;
 using System.Reflection;
-using Microsoft.Extensions.Configuration;
 
 namespace Murat.BusinessLogic.Utilities
 {
     public class AuxiliarMethods
     {
-        public static string ImageToBase64(string ImagenPath)
-        {
-            string path = "../Imagenes/Slider/Producto/" + ImagenPath;
-            byte[] imageArray = File.ReadAllBytes(path);
-            return Convert.ToBase64String(imageArray);
-        }
-
-        public static void Base64ToImage(string binary, string ImagePath, string Category)
+        public static void Base64ToImage(string directory, string binary, string ImagePath, string Category)
         {
             var img = Image.FromStream(new MemoryStream(Convert.FromBase64String(binary)));
-            var path = String.Concat("D:/WEB/Murat/Slider/", Category,"/", ImagePath);
+            var path = String.Concat(directory, Category,"/", ImagePath);
             if (File.Exists(path))
             {
                 File.Delete(path);
@@ -27,9 +19,9 @@ namespace Murat.BusinessLogic.Utilities
             img.Save(path);
         }
 
-        public static string GenerarURL(string categoria, string ImageName)
+        public static string GenerarURL(string directory, string categoria, string ImageName)
         {
-            string url = Path.Combine(Constant.url_imagenes, categoria, ImageName);
+            string url = Path.Combine(directory, categoria, ImageName);
             return url;
         }
 
